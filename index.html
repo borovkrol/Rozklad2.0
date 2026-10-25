@@ -13,7 +13,7 @@
 header{padding:24px 18px 18px;max-width:850px;margin:auto}h1{font-size:clamp(23px,6vw,32px);line-height:1.15;margin:0 0 8px}header p{margin:0;color:var(--muted);font-size:14px}
 main{max-width:850px;margin:auto;padding:0 14px 32px}.days{display:flex;gap:8px;overflow-x:auto;padding:4px 0 14px;position:sticky;top:0;background:#0b1120ed;z-index:2}
 .days button{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:10px 14px;font-weight:650;white-space:nowrap}.days button.active{background:var(--accent);color:#082032;border-color:var(--accent)}
-.day-title{font-size:20px;margin:8px 2px 12px}.lesson{display:grid;grid-template-columns:94px 1fr;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin:0 0 10px}.time{font-weight:750;color:var(--accent);font-size:14px}.period{font-size:12px;color:var(--muted);margin-top:4px}.subject{font-weight:750;font-size:16px;margin-bottom:6px}.details{font-size:13px;color:#c2cde0;white-space:pre-line}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.actions a{display:inline-block;text-decoration:none;background:#1e789c;color:white;border-radius:10px;padding:8px 12px;font-size:13px;font-weight:750}.actions .secondary{background:#27354c;color:#e4edf9}.note{border:1px dashed #536580;border-radius:12px;padding:12px;color:#c2cde0;font-size:13px;margin:12px 0}.empty{padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:16px;color:var(--muted)}footer{text-align:center;color:var(--muted);font-size:12px;padding:16px}
+.status{background:linear-gradient(135deg,#172b43,#132033);border:1px solid #36516e;border-radius:18px;padding:16px;margin:0 0 16px}.status-label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}.status-title{font-size:19px;font-weight:800;margin:5px 0}.status-clock{font-size:28px;font-weight:850;letter-spacing:.03em;color:var(--accent);font-variant-numeric:tabular-nums}.status-sub{font-size:13px;color:#c2cde0;margin-top:4px}.lesson.current{border-color:#34d399;box-shadow:0 0 0 1px #34d39955;background:#12302e}.lesson.current .time{color:#6ee7b7}.current-tag{display:inline-block;margin:0 0 7px;background:#065f46;color:#d1fae5;border-radius:7px;padding:3px 7px;font-size:11px;font-weight:850}.day-title{font-size:20px;margin:8px 2px 12px}.lesson{display:grid;grid-template-columns:94px 1fr;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin:0 0 10px}.time{font-weight:750;color:var(--accent);font-size:14px}.period{font-size:12px;color:var(--muted);margin-top:4px}.subject{font-weight:750;font-size:16px;margin-bottom:6px}.details{font-size:13px;color:#c2cde0;white-space:pre-line}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.actions a{display:inline-block;text-decoration:none;background:#1e789c;color:white;border-radius:10px;padding:8px 12px;font-size:13px;font-weight:750}.actions .secondary{background:#27354c;color:#e4edf9}.note{border:1px dashed #536580;border-radius:12px;padding:12px;color:#c2cde0;font-size:13px;margin:12px 0}.empty{padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:16px;color:var(--muted)}footer{text-align:center;color:var(--muted);font-size:12px;padding:16px}
 @media(min-width:620px){.lesson{grid-template-columns:120px 1fr;padding:18px}.subject{font-size:18px}}
 </style>
 </head>
@@ -23,7 +23,7 @@ main{max-width:850px;margin:auto;padding:0 14px 32px}.days{display:flex;gap:8px;
 <nav class="days" aria-label="Дні тижня">
 <button class="active" data-day="0">Понеділок</button><button data-day="1">Вівторок</button><button data-day="2">Середа</button><button data-day="3">Четвер</button><button data-day="4">П’ятниця</button>
 </nav>
-<div id="content"></div>
+<section class="status" aria-live="polite"><div class="status-label" id="status-label">Зараз</div><div class="status-title" id="status-title">Перевіряю розклад…</div><div class="status-clock" id="status-clock">--:--:--</div><div class="status-sub" id="status-sub">Час оновлюється автоматично, поки сторінка відкрита.</div></section><div id="content"></div>
 <footer>Натисни «Відкрити Zoom», щоб перейти до конференції. Дані сформовано з наданого розкладу.</footer>
 </main>
 <script>
@@ -55,12 +55,34 @@ const days=[
 ]
 ];
 const names=["Понеділок","Вівторок","Середа","Четвер","П’ятниця"];
-function render(day){document.querySelectorAll(".days button").forEach(b=>b.classList.toggle("active",+b.dataset.day===day));let list=days[day];let html=`<h2 class="day-title">${names[day]}</h2>`;
+let selectedDay=(new Date().getDay()+6)%7;
+function render(day){selectedDay=day;document.querySelectorAll(".days button").forEach(b=>b.classList.toggle("active",+b.dataset.day===day));let list=days[day];let html=`<h2 class="day-title">${names[day]}</h2>`;
 if(!list.length){html+='<div class="empty">За наданим розкладом пар немає.</div>'}
-for(const x of list){let t=times[x.n-1];html+=`<article class="lesson"><div><div class="time">${t[0]}–${t[1]}</div><div class="period">${x.n}-а пара</div></div><div><div class="subject">${x.title}</div><div class="details">${x.teacher}\n${x.room}${x.id?`\nZoom ID: ${x.id}${x.code&&x.code!=="—"?`\nКод: ${x.code}`:""}`:""}</div>${x.note?`<div class="note">${x.note}</div>`:""}<div class="actions">${x.url?`<a href="${x.url}" target="_blank" rel="noopener">Відкрити Zoom ↗</a>`:""}${x.id?`<a class="secondary" href="https://zoom.us/join" target="_blank" rel="noopener">Ввести ID вручну</a>`:""}</div></div></article>`}
+for(const x of list){let t=times[x.n-1];const now=new Date();const start=new Date(now);start.setHours(+t[0].slice(0,2),+t[0].slice(3),0,0);const end=new Date(now);end.setHours(+t[1].slice(0,2),+t[1].slice(3),0,0);const active=(now.getDay()===(day+1)%7 && now>=start && now<end);html+=`<article class="lesson ${active?"current":""}"><div><div class="time">${t[0]}–${t[1]}</div><div class="period">${x.n}-а пара</div></div><div>${active?`<div class="current-tag">● ЗАРАЗ ІДЕ ПАРА</div>`:""}<div class="subject">${x.title}</div><div class="details">${x.teacher}\n${x.room}${x.id?`\nZoom ID: ${x.id}${x.code&&x.code!=="—"?`\nКод: ${x.code}`:""}`:""}</div>${x.note?`<div class="note">${x.note}</div>`:""}<div class="actions">${x.url?`<a href="${x.url}" target="_blank" rel="noopener">Відкрити Zoom ↗</a>`:""}${x.id?`<a class="secondary" href="https://zoom.us/join" target="_blank" rel="noopener">Ввести ID вручну</a>`:""}</div></div></article>`}
 document.querySelector("#content").innerHTML=html}
 document.querySelectorAll(".days button").forEach(b=>b.addEventListener("click",()=>render(+b.dataset.day)));
-render(0);
+function updateStatus(){
+ const now=new Date(), dow=now.getDay(), todayIndex=(dow+6)%7;
+ const pad=n=>String(n).padStart(2,"0");
+ const fmt=d=>`${pad(d.getHours())}:${pad(d.getMinutes())}`;
+ let current=null, next=null;
+ for(let offset=0;offset<7;offset++){
+  const di=(todayIndex+offset)%7;
+  for(const x of days[di]){
+   const [sh,sm]=times[x.n-1][0].split(":").map(Number),[eh,em]=times[x.n-1][1].split(":").map(Number);
+   const start=new Date(now);start.setDate(now.getDate()+offset);start.setHours(sh,sm,0,0);
+   const end=new Date(now);end.setDate(now.getDate()+offset);end.setHours(eh,em,0,0);
+   if(offset===0&&now>=start&&now<end){current={di,x,start,end};}
+   if(start>now&&(!next||start<next.start))next={di,x,start,end};
+  }
+ }
+ const label=document.querySelector("#status-label"),title=document.querySelector("#status-title"),clock=document.querySelector("#status-clock"),sub=document.querySelector("#status-sub");
+ if(current){label.textContent="Зараз триває заняття";title.textContent=current.x.title;const sec=Math.max(0,Math.floor((current.end-now)/1000));clock.textContent=`До кінця ${pad(Math.floor(sec/3600))}:${pad(Math.floor(sec%3600/60))}:${pad(sec%60)}`;sub.textContent=`${names[current.di]} · ${fmt(current.start)}–${fmt(current.end)} · ${current.x.teacher}`;}
+ else if(next){label.textContent="Наступне заняття";title.textContent=next.x.title;const sec=Math.max(0,Math.floor((next.start-now)/1000));clock.textContent=`Через ${pad(Math.floor(sec/3600))}:${pad(Math.floor(sec%3600/60))}:${pad(sec%60)}`;sub.textContent=`${names[next.di]} · ${fmt(next.start)}–${fmt(next.end)} · ${next.x.teacher}`;}
+ else {label.textContent="Розклад";title.textContent="Занять більше немає";clock.textContent="";sub.textContent="Перевір розклад на наступний тиждень.";}
+ render(selectedDay);
+}
+render((new Date().getDay()+6)%7);updateStatus();setInterval(updateStatus,1000);
 if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("./sw.js").catch(()=>{});
 </script>
 </body></html>
