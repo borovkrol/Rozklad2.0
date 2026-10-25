@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<meta name="description" content="Розклад занять групи СС-25-1фмб-hm">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Розклад СС-25-1фмб-hm</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1120;--panel:#131d30;--muted:#9aa9c1;--line:#293750;--accent:#7dd3fc;--text:#f3f6fb}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#101827,#0b1120 55%);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:24px 18px 18px;max-width:850px;margin:auto}h1{font-size:clamp(23px,6vw,32px);line-height:1.15;margin:0 0 8px}header p{margin:0;color:var(--muted);font-size:14px}
+main{max-width:850px;margin:auto;padding:0 14px 32px}.days{display:flex;gap:8px;overflow-x:auto;padding:4px 0 14px;position:sticky;top:0;background:#0b1120ed;z-index:2}
+.days button{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:10px 14px;font-weight:650;white-space:nowrap}.days button.active{background:var(--accent);color:#082032;border-color:var(--accent)}
+.day-title{font-size:20px;margin:8px 2px 12px}.lesson{display:grid;grid-template-columns:94px 1fr;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin:0 0 10px}.time{font-weight:750;color:var(--accent);font-size:14px}.period{font-size:12px;color:var(--muted);margin-top:4px}.subject{font-weight:750;font-size:16px;margin-bottom:6px}.details{font-size:13px;color:#c2cde0;white-space:pre-line}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.actions a{display:inline-block;text-decoration:none;background:#1e789c;color:white;border-radius:10px;padding:8px 12px;font-size:13px;font-weight:750}.actions .secondary{background:#27354c;color:#e4edf9}.note{border:1px dashed #536580;border-radius:12px;padding:12px;color:#c2cde0;font-size:13px;margin:12px 0}.empty{padding:24px;background:var(--panel);border:1px solid var(--line);border-radius:16px;color:var(--muted)}footer{text-align:center;color:var(--muted);font-size:12px;padding:16px}
+@media(min-width:620px){.lesson{grid-template-columns:120px 1fr;padding:18px}.subject{font-size:18px}}
+</style>
+</head>
+<body>
+<header><h1>Розклад занять</h1><p>СС-25-1фмб-hm · 1 семестр 2026–2027</p></header>
+<main>
+<nav class="days" aria-label="Дні тижня">
+<button class="active" data-day="0">Понеділок</button><button data-day="1">Вівторок</button><button data-day="2">Середа</button><button data-day="3">Четвер</button><button data-day="4">П’ятниця</button>
+</nav>
+<div id="content"></div>
+<footer>Натисни «Відкрити Zoom», щоб перейти до конференції. Дані сформовано з наданого розкладу.</footer>
+</main>
+<script>
+const times=[["08:30","09:50"],["10:00","11:20"],["11:40","13:00"],["13:10","14:30"],["14:40","16:00"],["16:20","17:40"],["17:50","19:10"]];
+const days=[
+[
+{n:2,title:"Конституційне право України (лекція)",teacher:"к.ю.н. Кожушко О.О.",room:"48 ауд.",url:"https://us04web.zoom.us/j/7381051849?pwd=dWVlbVp2T2JTR2x4N0ZobllLbGViZz09",id:"7381051849",code:"EGRcx1"},
+{n:3,title:"Основи адміністративного права та публічного адміністрування",options:["Лекція","Семінар"],teacher:"к.ю.н. Кожушко О.О.",room:"48 ауд.",url:"https://us04web.zoom.us/j/7381051849?pwd=dWVlbVp2T2JTR2x4N0ZobllLbGViZz09",id:"7381051849",code:"EGRcx1",note:"У таблиці вказані лекція та семінар для цього часу; розподіл за тижнями не зазначено."},
+{n:4,title:"Історія вчень про державу і право (семінар)",teacher:"к.ю.н., доц. Олійник У.М.",room:"48 ауд.",url:"https://us05web.zoom.us/j/7878813129?pwd=XHr8xXlOdLmfXU44AltKhhLSbnMIth.1",id:"7878813129",code:"S2krGB"},
+{n:4,title:"Іноземна мова (практика)",teacher:"викл. Кравчук А.І.",room:"48 ауд.",url:"https://us05web.zoom.us/j/9908930498?pwd=hjQPKKRBJxlZVidjMHqYmXufIOE0Jb.1",id:"9908930498",code:"88888888",note:"Альтернативний запис у тій самій парі; у файлі не вказано, для якого тижня."}
+],
+[
+{n:1,title:"Юридичне документознавство (лекція)",teacher:"викл. Галко О.М.",room:"48 ауд.",url:"https://us04web.zoom.us/j/8427172779?pwd=YlV6NEM4V3NuQzZLdFRONUo1UTdZZz09",id:"842 717 2779",code:"Xxst4A"},
+{n:2,title:"Цивільне право (загальна частина) (лекція/семінар)",teacher:"к.ю.н., доц. Мозолюк-Боднар Л.М.",room:"48 ауд.",url:"https://us02web.zoom.us/j/2501480342?pwd=Wk1QdW5oK2ZQa2lVcy9BNWRVZkt1dz09",id:"250 148 0342",code:"086395"},
+{n:3,title:"Історія вчень про державу і право (лекція)",teacher:"к.ю.н., доц. Олійник У.М.",room:"ІКЦ 28 ауд.",url:"https://us05web.zoom.us/j/7878813129?pwd=XHr8xXlOdLmfXU44AltKhhLSbnMIth.1",id:"7878813129",code:"S2krGB"}
+],
+[
+{n:4,title:"Конституційне право України (семінар)",teacher:"к.ю.н. Кожушко О.О.",room:"48 ауд.",url:"https://us04web.zoom.us/j/7381051849?pwd=dWVlbVp2T2JTR2x4N0ZobllLbGViZz09",id:"7381051849",code:"EGRcx1"},
+{n:5,title:"Юридичне документознавство (практика)",teacher:"викл. Галко О.М.",room:"48 ауд.",url:"https://us04web.zoom.us/j/8427172779?pwd=YlV6NEM4V3NuQzZLdFRONUo1UTdZZz09",id:"842 717 2779",code:"Xxst4A"}
+],
+[
+{n:4,title:"Кримінальне право (загальна частина) (лекція/семінар)",teacher:"к.ю.н., доц. Смірнова І.С.",room:"48 ауд.",url:"https://us04web.zoom.us/j/7482050286?pwd=9NpyW1FioOr9ml8Z7Xw1KmaO42re0P.1",id:"7482050286",code:"—"},
+{n:5,title:"Трудове право (лекція)",teacher:"викл. Галко О.М.",room:"33 ауд.",url:"https://us04web.zoom.us/j/8427172779?pwd=YlV6NEM4V3NuQzZLdFRONUo1UTdZZz09",id:"842 717 2779",code:"Xxst4A"},
+{n:6,title:"Трудове право (семінар)",teacher:"викл. Галко О.М.",room:"33 ауд.",url:"https://us04web.zoom.us/j/8427172779?pwd=YlV6NEM4V3NuQzZLdFRONUo1UTdZZz09",id:"842 717 2779",code:"Xxst4A"}
+],
+[
+{n:4,title:"Основи національного спротиву (лекція/практика)",teacher:"У файлі не зазначено",room:"Не зазначено"},
+{n:5,title:"Основи національного спротиву (лекція/практика)",teacher:"У файлі не зазначено",room:"Не зазначено"}
+]
+];
+const names=["Понеділок","Вівторок","Середа","Четвер","П’ятниця"];
+function render(day){document.querySelectorAll(".days button").forEach(b=>b.classList.toggle("active",+b.dataset.day===day));let list=days[day];let html=`<h2 class="day-title">${names[day]}</h2>`;
+if(!list.length){html+='<div class="empty">За наданим розкладом пар немає.</div>'}
+for(const x of list){let t=times[x.n-1];html+=`<article class="lesson"><div><div class="time">${t[0]}–${t[1]}</div><div class="period">${x.n}-а пара</div></div><div><div class="subject">${x.title}</div><div class="details">${x.teacher}\n${x.room}${x.id?`\nZoom ID: ${x.id}${x.code&&x.code!=="—"?`\nКод: ${x.code}`:""}`:""}</div>${x.note?`<div class="note">${x.note}</div>`:""}<div class="actions">${x.url?`<a href="${x.url}" target="_blank" rel="noopener">Відкрити Zoom ↗</a>`:""}${x.id?`<a class="secondary" href="https://zoom.us/join" target="_blank" rel="noopener">Ввести ID вручну</a>`:""}</div></div></article>`}
+document.querySelector("#content").innerHTML=html}
+document.querySelectorAll(".days button").forEach(b=>b.addEventListener("click",()=>render(+b.dataset.day)));
+render(0);
+if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script>
+</body></html>
