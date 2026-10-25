@@ -55,7 +55,7 @@ const days=[
 ]
 ];
 const names=["Понеділок","Вівторок","Середа","Четвер","П’ятниця"];
-let selectedDay=(new Date().getDay()+6)%7;
+let selectedDay=(()=>{const d=new Date().getDay();return d>=1&&d<=5?d-1:0})();
 function render(day){selectedDay=day;document.querySelectorAll(".days button").forEach(b=>b.classList.toggle("active",+b.dataset.day===day));let list=days[day];let html=`<h2 class="day-title">${names[day]}</h2>`;
 if(!list.length){html+='<div class="empty">За наданим розкладом пар немає.</div>'}
 for(const x of list){let t=times[x.n-1];const now=new Date();const start=new Date(now);start.setHours(+t[0].slice(0,2),+t[0].slice(3),0,0);const end=new Date(now);end.setHours(+t[1].slice(0,2),+t[1].slice(3),0,0);const active=(now.getDay()===(day+1)%7 && now>=start && now<end);html+=`<article class="lesson ${active?"current":""}"><div><div class="time">${t[0]}–${t[1]}</div><div class="period">${x.n}-а пара</div></div><div>${active?`<div class="current-tag">● ЗАРАЗ ІДЕ ПАРА</div>`:""}<div class="subject">${x.title}</div><div class="details">${x.teacher}\n${x.room}${x.id?`\nZoom ID: ${x.id}${x.code&&x.code!=="—"?`\nКод: ${x.code}`:""}`:""}</div>${x.note?`<div class="note">${x.note}</div>`:""}<div class="actions">${x.url?`<a href="${x.url}" target="_blank" rel="noopener">Відкрити Zoom ↗</a>`:""}${x.id?`<a class="secondary" href="https://zoom.us/join" target="_blank" rel="noopener">Ввести ID вручну</a>`:""}</div></div></article>`}
@@ -66,8 +66,9 @@ function updateStatus(){
  const pad=n=>String(n).padStart(2,"0");
  const fmt=d=>`${pad(d.getHours())}:${pad(d.getMinutes())}`;
  let current=null, next=null;
- for(let offset=0;offset<7;offset++){
+ for(let offset=0;offset<8;offset++){
   const di=(todayIndex+offset)%7;
+  if(di>=5) continue; // у суботу та неділю занять у цьому розкладі немає
   for(const x of days[di]){
    const [sh,sm]=times[x.n-1][0].split(":").map(Number),[eh,em]=times[x.n-1][1].split(":").map(Number);
    const start=new Date(now);start.setDate(now.getDate()+offset);start.setHours(sh,sm,0,0);
@@ -82,7 +83,7 @@ function updateStatus(){
  else {label.textContent="Розклад";title.textContent="Занять більше немає";clock.textContent="";sub.textContent="Перевір розклад на наступний тиждень.";}
  render(selectedDay);
 }
-render((new Date().getDay()+6)%7);updateStatus();setInterval(updateStatus,1000);
+render(selectedDay);updateStatus();setInterval(updateStatus,1000);
 if("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("./sw.js").catch(()=>{});
 </script>
 </body></html>
